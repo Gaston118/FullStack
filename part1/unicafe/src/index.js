@@ -31,6 +31,8 @@ const handleBadClick = () => {
   console.log("bad")
 }
 
+const all =  good + neutral + bad
+
   return (
     <div>
       <h1>Give feedback</h1>
@@ -42,6 +44,14 @@ const handleBadClick = () => {
       <p>Good: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Bad: {bad}</p>
+      
+      {all !== 0 && (
+      <div>
+        <p>Average: {(good - bad) / all}</p>
+        <p>Positive: {(good / all) * 100}%</p>
+      </div>
+    )}
+    
     </div>
   )
 }
