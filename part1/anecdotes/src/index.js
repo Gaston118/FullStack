@@ -2,18 +2,49 @@ import React from 'react'
 import { createRoot } from 'react-dom/client';
 import { useState } from 'react'
 
+const MostVotedAnecdote = ({ anecdotes, votes }) => {
+  const maxVotes = Math.max(...votes);
+  const mostVotedIndex = votes.indexOf(maxVotes);
+
+  if (maxVotes === 0) {
+    return null; 
+  }
+
+  return (
+    <div>
+      <h2>Most Voted Anecdote</h2>
+      <p>{anecdotes[mostVotedIndex]}</p>
+      <p>Votes: {maxVotes}</p>
+    </div>
+  );
+};
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(props.anecdotes.length).fill(0))
 
   const handleNextClick = () => {
     const randomIndex = Math.floor(Math.random() * props.anecdotes.length);
     setSelected(randomIndex);
   };
 
+  const handleVoteClick = () => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    setVotes(newVotes);
+  };
+
   return (
     <div>
-      <div>{props.anecdotes[selected]}</div>
+      <div>
+        <h2>Current Anecdote</h2>
+        <p>{props.anecdotes[selected]}</p>
+        <p>Votes: {votes[selected]}</p>
+      </div>
+
+      <button onClick={handleVoteClick}>Vote</button>
       <button onClick={handleNextClick}>Next Anecdote</button>
+      <MostVotedAnecdote anecdotes={props.anecdotes} votes={votes} />
     </div>
   )
 }
