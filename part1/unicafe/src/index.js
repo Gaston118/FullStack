@@ -31,7 +31,25 @@ const handleBadClick = () => {
   console.log("bad")
 }
 
-const all =  good + neutral + bad
+const Statistics = ({ good, neutral, bad }) => {
+  const all = good + neutral + bad;
+
+  return (
+    <div>
+      <h2>Statistics</h2>
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+      
+      {all !== 0 && (
+        <div>
+          <p>Average: {(good - bad) / all}</p>
+          <p>Positive: {(good / all) * 100}%</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
   return (
     <div>
@@ -40,18 +58,8 @@ const all =  good + neutral + bad
       <Button handleClick={handleNeutralClick} text='Neutral'/>
       <Button handleClick={handleBadClick} text='Bad'/>
 
-      <h2>Statics</h2>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      
-      {all !== 0 && (
-      <div>
-        <p>Average: {(good - bad) / all}</p>
-        <p>Positive: {(good / all) * 100}%</p>
-      </div>
-    )}
-    
+      <Statistics good={good} neutral={neutral} bad={bad} />
+
     </div>
   )
 }
