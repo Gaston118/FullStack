@@ -1,6 +1,6 @@
 const Person = ({ person }) => {
     return (
-      <li>{person.content} {person.number}</li>
+      <li>{person.name} {person.number}</li>
     )
   }
   

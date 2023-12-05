@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import Person from './Person'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
+import axios from 'axios'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -9,16 +10,27 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
 
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
+  console.log('render', persons.length, 'persons')
+
   const addName = (event) => {
     event.preventDefault()
     
-    if (persons.some(person => person.content === newName) || persons.some(persons => persons.number === newNumber)) {
+    if (persons.some(person => person.name === newName) || persons.some(persons => persons.number === newNumber)) {
       alert(`${newName} o ${newNumber} is already added to phonebook`);
       setNewName('')
       setNewNumber('')
     } else {
       const nameObject = {
-        content: newName,
+        name: newName,
         number: newNumber,
         id: persons.length + 1,
       }
@@ -44,7 +56,7 @@ const handleSearchChange = (event) => {
 }
 
 const filteredPersons = persons.filter(person =>
-  person.content.toLowerCase().startsWith(newFilter.toLowerCase())
+  person.name && person.name.toLowerCase().startsWith(newFilter.toLowerCase())
 );
 
   return (
