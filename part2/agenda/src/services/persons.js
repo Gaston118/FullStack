@@ -14,10 +14,15 @@ const borrar = (id) => {
     return request.then(response => response.data)
   }
 
+  const update = (id, newObject) => {
+    return axios.put(`${baseUrl}/${id}`, newObject)
+  }
+
 const personsService = {
     getAll: getAll,
     create: create,
-    borrar: borrar
+    borrar: borrar,
+    update: update
   };
   
   export default personsService;
