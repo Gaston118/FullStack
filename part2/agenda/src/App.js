@@ -57,6 +57,20 @@ const handleSearchChange = (event) => {
   setNewFilter(event.target.value);
 }
 
+const handleDelete = (id) => {
+  const person = persons.find(person => person.id === id)
+  if (person && window.confirm(`Delete ${person.name} ?`)) {
+    personsService
+    .borrar(id)
+    .then(() => {
+      setPersons(persons.filter(person => person.id !== id))
+    })
+    .catch(error => {
+      console.error('Error deleting person:', error);
+    });
+  }
+}
+
 const filteredPersons = persons.filter(person =>
   person.name && person.name.toLowerCase().startsWith(newFilter.toLowerCase())
 );
@@ -78,7 +92,7 @@ const filteredPersons = persons.filter(person =>
       <h2>Numbers</h2>
       <ul>
        {filteredPersons.map((person) => (
-        <Person key={person.id} person={person} />
+        <Person key={person.id} person={person} handleDelete={handleDelete}/>
       ))}
       </ul>
     </div>
