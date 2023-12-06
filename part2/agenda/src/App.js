@@ -3,6 +3,7 @@ import Person from './Person'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
 import personsService from './services/persons'
+import './App.css';
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -10,6 +11,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
   const [notification, setNotification] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     personsService
@@ -39,7 +41,7 @@ const App = () => {
           showNotification(`Added ${newName}`);
         })
         .catch(error => {
-          showNotification(`the person '${newName}' was already deleted from server`);
+          showError(`the person '${newName}' was already deleted from server`);
           console.log(error)
           setPersons(persons.filter(n => n.id !== id))
         })
@@ -99,6 +101,13 @@ const showNotification = message => {
   }, 5000); // La notificación desaparecerá después de 5 segundos
 };
 
+const showError = message => {
+  setError(message);
+  setTimeout(() => {
+    setError(null);
+  }, 5000); // La notificación desaparecerá después de 5 segundos
+};
+
 const filteredPersons = persons.filter(person =>
   person.name && person.name.toLowerCase().startsWith(newFilter.toLowerCase())
 );
@@ -106,6 +115,7 @@ const filteredPersons = persons.filter(person =>
   return (
     <div>
       {notification && <div className="notification">{notification}</div>}
+      {error && <div className="error">{error}</div>}
       <h2>Phonebook</h2>
       <div>
       <Filter searchTerm={newFilter} onSearchChange={handleSearchChange} />
