@@ -5,6 +5,7 @@ import Filter from './Filter'
 function App() {
   const [ paises, setPaises ] = useState([]) 
   const [ newFilter, setNewFilter ] = useState('')
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
     console.log('effect')
@@ -20,7 +21,12 @@ function App() {
 
   const handleSearchChange = (event) => {
     setNewFilter(event.target.value);
+    setSelectedCountry(null);
   }
+
+  const handleCountryClick = (country) => {
+    setSelectedCountry(country);
+  };
   
   const filteredCountries =
     newFilter.trim() !== ''
@@ -45,10 +51,26 @@ function App() {
       {mensaje || (
         <ul>
           {filteredCountries.map((pais) => (
-            <li key={pais.name.common}>{pais.name.common}</li>
+            <li key={pais.name.common}>{pais.name.common}
+            {filteredCountries.length > 1 && (
+              <button onClick={() => handleCountryClick(pais)}>
+                show
+              </button>
+            )}
+            </li>
           ))}
         </ul>
       )}
+      {selectedCountry && (
+        <div>
+        <h2>{selectedCountry.name.common}</h2>
+        <p>Capital: {selectedCountry.capital}</p>
+        <p>Poblacion: {selectedCountry.population}</p>
+        <p>Idiomas: {Object.values(selectedCountry.languages).join(', ')}</p>
+        <img src={selectedCountry.flags.png} alt={`Bandera de ${selectedCountry.name.common}`}/>
+      </div>
+      )
+      }
       {detalles && countryDetails &&(
           <div>
           <h2>{countryDetails.name.common}</h2>
