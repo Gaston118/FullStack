@@ -66,7 +66,15 @@ function App() {
         <h2>{selectedCountry.name.common}</h2>
         <p>Capital: {selectedCountry.capital}</p>
         <p>Poblacion: {selectedCountry.population}</p>
-        <p>Idiomas: {Object.values(selectedCountry.languages).join(', ')}</p>
+        <p>
+            Idiomas:{' '}
+            <ul>
+              {selectedCountry.languages &&
+               Object.values(selectedCountry.languages).map((idioma, index) => (
+                 <li key={index}>{idioma}</li>
+                ))}
+           </ul>
+          </p>
         <img src={selectedCountry.flags.png} alt={`Bandera de ${selectedCountry.name.common}`}/>
       </div>
       )
@@ -76,7 +84,15 @@ function App() {
           <h2>{countryDetails.name.common}</h2>
           <p>Capital: {countryDetails.capital}</p>
           <p>Poblacion: {countryDetails.population}</p>
-          <p>Idiomas: {Object.values(countryDetails.languages).join(', ')}</p>
+          <p>
+            Idiomas:{' '}
+            <ul>
+              {countryDetails.languages &&
+               Object.values(countryDetails.languages).map((idioma, index) => (
+                 <li key={index}>{idioma}</li>
+               ))}
+            </ul>
+          </p>
           <img src={countryDetails.flags.png} alt={`Bandera de ${countryDetails.name.common}`}/>
         </div>
       )}
