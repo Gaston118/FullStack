@@ -40,10 +40,6 @@ function App() {
   
   }, [selectedCountry, paises, api_key])
 
-  console.log('render', paises.length, 'paises')
-  console.log(paises)
-  console.log(weather)
-
   const handleSearchChange = (event) => {
     setNewFilter(event.target.value);
     setSelectedCountry(null);
