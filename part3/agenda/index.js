@@ -80,6 +80,23 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(204).end()
   })
 
+  app.get('/info', (request, response) => {
+    const currentDate = new Date();
+    const numberOfEntries = persons.length;
+  
+    const info = {
+      timestamp: currentDate.toString(),
+      entriesCount: numberOfEntries,
+    };
+  
+    const infoHTML = `
+      <p>Timestamp: ${info.timestamp}</p>
+      <p>phonebook has info for ${info.entriesCount} persons</p>
+    `;
+  
+    response.send(infoHTML);
+  });
+
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
