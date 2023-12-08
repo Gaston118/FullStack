@@ -1,7 +1,21 @@
 const express = require('express')
+const morgan = require('morgan');
 const app = express()
 
 app.use(express.json())
+
+app.use(
+    morgan((tokens, req, res) => {
+      const method = tokens.method(req, res);
+      const url = tokens.url(req, res);
+      const status = tokens.status(req, res);
+      const contentLength = tokens.res(req, res, 'content-length');
+      const responseTime = tokens['response-time'](req, res);
+      const postData = req.method === 'POST' ? JSON.stringify(req.body) : '-';
+  
+      return `${method} ${url} ${status} ${contentLength} - ${responseTime} ms ${postData}`;
+    })
+  );
 
     let persons= [
       {
