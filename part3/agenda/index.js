@@ -53,17 +53,20 @@ app.get('/api/persons/:id', (request, response) => {
   }
 
   app.post('/api/persons', (request, response) => {
-    const body = request.body
-  
-    if (!body.content) {
-      return response.status(400).json({ 
-        error: 'content missing' 
-      })
-    }
+    const { name, number } = request.body;
+
+  if (!name || !number) {
+    return response.status(400).json({ error: 'Name and number are required.' });
+  }
+
+  const existingEntry = persons.find((entry) => entry.name === name);
+  if (existingEntry) {
+    return response.status(400).json({ error: 'Name already exists in the agenda.' });
+  }
   
     const person = {
-      content: body.content,
-      number: body.number || 118,
+      name,
+      number,
       date: new Date(),
       id: generateId(),
     }
