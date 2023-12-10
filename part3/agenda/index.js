@@ -1,7 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan');
 const app = express()
 const cors = require('cors')
+
+const Person = require('./models/person')
 
 app.use(cors())
 
@@ -22,102 +25,104 @@ app.use(
     })
   );
 
-    let persons= [
-      {
-        "name": "Arto Hellas",
-        "number": "040-123456",
-        "id": 1
-      },
-      {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-      },
-      {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-      },
-      {
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122",
-        "id": 4
-      }
-    ]
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(p => p.id === id)
-    if (person) {
-        console.log(person)
-        response.json(person)
-      } else {
-        response.status(404).end()
-      }
+  Person.findById(request.params.id).then(p => {
+    if(p){
+      response.json(p)
+    }else {
+      response.status(404).end()
+    } 
   })
+})
 
-  app.get('/api/persons', (request, response) => {
+app.get('/api/persons', async (request, response) => {
+  try {
+    const persons = await Person.find({});
     response.json(persons);
-  });
-
-  const generateId = () => {
-    const maxId = persons.length > 0
-      ? Math.max(...persons.map(n => n.id))
-      : 0
-    return maxId + 1
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: 'Internal Server Error' });
   }
+});
 
-  app.post('/api/persons', (request, response) => {
+
+
+app.post('/api/persons', async (request, response) => {
+  try {
     const { name, number } = request.body;
 
-  if (!name || !number) {
-    return response.status(400).json({ error: 'Name and number are required.' });
-  }
-
-  const existingEntry = persons.find((entry) => entry.name === name);
-  if (existingEntry) {
-    return response.status(400).json({ error: 'Name already exists in the agenda.' });
-  }
-  
-    const person = {
-      name,
-      number,
-      date: new Date(),
-      id: generateId(),
+    if (!name || !number) {
+      return response.status(400).json({ error: 'Name and number are required.' });
     }
-  
-    persons = persons.concat(person)
-  
-    response.json(person)
-  })
 
-  app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(note => note.id !== id)
-  
-    response.status(204).end()
-  })
+    // Buscar si ya existe una persona con el mismo nombre
+    const existingPerson = await Person.findOne({ name });
 
-  app.get('/info', (request, response) => {
-    const currentDate = new Date();
-    const numberOfEntries = persons.length;
+    if (existingPerson) {
+      // Si existe, actualizar el número de teléfono
+      existingPerson.number = number;
+      const updatedPerson = await existingPerson.save();
+      response.json(updatedPerson);
+    } else {
+      // Si no existe, crear una nueva persona
+      const newPerson = new Person({
+        name,
+        number,
+        date: new Date(),
+      });
+
+      const savedPerson = await newPerson.save();
+      response.json(savedPerson);
+    }
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.put('/api/persons/:id', async (request, response) => {
+  const id = request.params.id;
+  const { name, number } = request.body;
+
+  try {
+    // Verificar si la persona con el ID proporcionado existe
+    const existingPerson = await Person.findById(id);
+
+    if (!existingPerson) {
+      return response.status(404).json({ error: 'Person not found.' });
+    }
+
+    // Actualizar el nombre y/o número de teléfono
+    existingPerson.name = name || existingPerson.name;
+    existingPerson.number = number || existingPerson.number;
+
+    // Guardar los cambios
+    const updatedPerson = await existingPerson.save();
+
+    response.json(updatedPerson);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+  app.delete('/api/persons/:id', async (request, response) => {
+    const id = request.params.id;
   
-    const info = {
-      timestamp: currentDate.toString(),
-      entriesCount: numberOfEntries,
-    };
-  
-    const infoHTML = `
-      <p>Timestamp: ${info.timestamp}</p>
-      <p>phonebook has info for ${info.entriesCount} persons</p>
-    `;
-  
-    response.send(infoHTML);
+    try {
+      await Person.findByIdAndDelete(id);
+      response.status(204).end(); // 204 significa "No Content" y se usa para indicar éxito en una operación de eliminación
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ error: 'Internal Server Error' });
+    }
   });
+
 
 const PORT = 3001
 app.listen(PORT, () => {
