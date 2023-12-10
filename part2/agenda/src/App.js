@@ -62,6 +62,15 @@ const App = () => {
         setNewNumber('')
         showNotification(`Added ${newName}`);
       })
+      .catch((error) => {
+        // Manejar errores de validación
+        if (error.response && error.response.status === 400) {
+          showError(error.response.data.error);
+        } else {
+          // Manejar otros errores
+          console.error(error);
+        }
+      });
   }
 }
 

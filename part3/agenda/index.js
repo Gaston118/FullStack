@@ -60,6 +60,12 @@ app.post('/api/persons', async (request, response) => {
       return response.status(400).json({ error: 'Name and number are required.' });
     }
 
+    if (name.length < 3 || number.length < 8) {
+      return response.status(400).json({
+        error: 'Name must have at least three characters and number must have at least eight digits.'
+      });
+    }
+
     // Buscar si ya existe una persona con el mismo nombre
     const existingPerson = await Person.findOne({ name });
 
