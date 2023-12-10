@@ -97,11 +97,10 @@ app.put('/api/persons/:id', async (request, response) => {
       return response.status(404).json({ error: 'Person not found.' });
     }
 
-    // Actualizar el nombre y/o número de teléfono
+    
     existingPerson.name = name || existingPerson.name;
     existingPerson.number = number || existingPerson.number;
 
-    // Guardar los cambios
     const updatedPerson = await existingPerson.save();
 
     response.json(updatedPerson);
