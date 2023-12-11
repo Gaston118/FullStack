@@ -24,10 +24,32 @@ const dummy = (blogs) => {
       likes: favorite.likes,
     };
   }
+
+  const mostBlogs = (blogs) => {
+    if (blogs.length === 0) {
+      return null; // Devolver null si no hay blogs
+    }
+  
+    const blogCountsByAuthor = blogs.reduce((blogCounts, blog) => {
+      const author = blog.author;
+      blogCounts[author] = (blogCounts[author] || 0) + 1;
+      return blogCounts;
+    }, {});
+  
+    const mostBlogsAuthor = Object.keys(blogCountsByAuthor).reduce((maxBlogsAuthor, author) => {
+      return blogCountsByAuthor[author] > blogCountsByAuthor[maxBlogsAuthor] ? author : maxBlogsAuthor;
+    }, Object.keys(blogCountsByAuthor)[0]); // Inicializar con el primer autor
+  
+    return {
+      author: mostBlogsAuthor,
+      blogs: blogCountsByAuthor[mostBlogsAuthor]
+    };
+  }
   
   module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
   };
   
