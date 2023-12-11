@@ -45,11 +45,33 @@ const dummy = (blogs) => {
       blogs: blogCountsByAuthor[mostBlogsAuthor]
     };
   }
+
+  const mostLikes = (blogs) => {
+    if (blogs.length === 0) {
+      return null; // Devolver null si no hay blogs
+    }
+  
+    const likesByAuthor = blogs.reduce((likesCount, blog) => {
+      const author = blog.author;
+      likesCount[author] = (likesCount[author] || 0) + blog.likes;
+      return likesCount;
+    }, {});
+  
+    const mostLikesAuthor = Object.keys(likesByAuthor).reduce((maxLikesAuthor, author) => {
+      return likesByAuthor[author] > likesByAuthor[maxLikesAuthor] ? author : maxLikesAuthor;
+    }, Object.keys(likesByAuthor)[0]); // Inicializar con el primer autor
+  
+    return {
+      author: mostLikesAuthor,
+      likes: likesByAuthor[mostLikesAuthor]
+    };
+  }
   
   module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
   };
   
