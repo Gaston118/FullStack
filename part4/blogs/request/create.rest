@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "corazon",
-    "author": "manuel",
-    "likes": 2000
+    "title": "a su madre",
+    "author": "pedro",
+    "likes": 2050
 }
