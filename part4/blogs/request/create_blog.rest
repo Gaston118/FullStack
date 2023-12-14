@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdhc3RvbiIsImlkIjoiNjU3YTM5NWU4Yjc3NjM3Y2I0NjJiNWI5IiwiaWF0IjoxNzAyNTE1MzM5LCJleHAiOjE3MDI1MTg5Mzl9.JD_3u7AZOOAIvSWlq9ZQdt7RwqRWUjNYgWpDPdx0Iuo
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdhc3RvbiIsImlkIjoiNjU3YTM5NWU4Yjc3NjM3Y2I0NjJiNWI5IiwiaWF0IjoxNzAyNTU5MjY3LCJleHAiOjE3MDI1NjI4Njd9.DGC10C7wVcbEbovS5ymkcjkVPw_eV57QvJJ6vVgxoPw
 
 {
-    "title": "borrando blog 3",
+    "title": "borrando blog 4",
     "author": "jwt prove",
-    "likes": 3
+    "likes": 4
 }
