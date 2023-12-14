@@ -45,6 +45,9 @@ blogsRouter.post('/', async (request, response, next) => {
       error: 'token expired'
     })
   }
+  else if(error.name === "Invalid token"){
+    return response.status(401).json({error: "token invalido"})
+  }
  }
 })
 
