@@ -60,6 +60,8 @@ const App = () => {
     }
   }
 
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+
   const handleLike = async (blogId) => {
     try {
       const blogToLike = blogs.find(blog => blog.id === blogId);
@@ -67,15 +69,12 @@ const App = () => {
         showError('Blog not found');
         return;
       }
-  
       const updatedBlog = { ...blogToLike, likes: blogToLike.likes + 1 };
   
-      // Actualizar el estado de blogs con el blog actualizado
       setBlogs((prevBlogs) =>
         prevBlogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b))
       );
   
-      // Actualizar el blog en el servidor
       await blogService.update(blogToLike.id, updatedBlog);
   
       showNotification(`Liked ${updatedBlog.title}`);
@@ -84,6 +83,20 @@ const App = () => {
       showError('Error updating likes');
     }
   };
+
+  const handleDelete = async (blogId) =>{
+    try{
+    const blog = blogs.find(blog => blog.id === blogId)
+    if (blog && window.confirm(`Delete ${blog.title} ?`)) {
+    await blogService.borrar(blogId)
+    
+    setBlogs(blogs.filter(blog => blog.id !== blogId))
+    showNotification(`Deleted ${blog.title}`);
+    }
+    }catch(error){
+      console.error('Error deleting person:', error);
+    }
+  }
 
   const addBlog = async (event) =>{
     event.preventDefault()
@@ -169,8 +182,12 @@ const App = () => {
         newAuthor={newAuthor}
         newLikes={newLikes} />
         </Togglable>
-        {blogs && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)}/>
+        {blogs && sortedBlogs.map(blog =>
+        <Blog key={blog.id}
+         blog={blog} 
+         handleLike={() => handleLike(blog.id)}
+         handleDelete={() => handleDelete(blog.id)} 
+         user={user}  />
         )}
       </div>
       }

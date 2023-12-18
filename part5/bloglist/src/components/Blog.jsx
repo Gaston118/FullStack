@@ -1,7 +1,7 @@
 // Blog.js
 import React, { useState } from 'react';
 
-const Blog = ({ blog , handleLike}) => {
+const Blog = ({ blog , handleLike, user, handleDelete}) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,6 +10,7 @@ const Blog = ({ blog , handleLike}) => {
     marginBottom: 5
   }
   const [showDetails, setShowDetails] = useState(false);
+  const isUserBlog = user && blog.user && user.username === blog.user.username;
 
   const toggleDetails = () => {
     setShowDetails(!showDetails);
@@ -20,6 +21,7 @@ const Blog = ({ blog , handleLike}) => {
       <div>
         <h4>{blog.title}</h4>
         <button onClick={toggleDetails}>{showDetails ? 'Hide' : 'View'}</button>
+        {isUserBlog && <button onClick={() => handleDelete(blog.id)}>Delete</button>}
       </div>
       {showDetails && (
         <div>
