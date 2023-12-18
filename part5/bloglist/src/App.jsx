@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -85,18 +87,6 @@ const App = () => {
     }
   }
 
-  const handleTitle = (event) => {
-    setNewTitle(event.target.value)
-  }
-
-  const handleAuthor = (event) =>{
-    setNewAuthor(event.target.value)
-  }
-
-  const handleLikes = (event) =>{
-    setNewLikes(event.target.value)
-  }
-
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -144,17 +134,19 @@ const App = () => {
       <div>
         <p>{user.name} logged-in</p>
         <button onClick={handleLogout}>Logout</button>
+        <Togglable buttonLabel="new_blog"> 
         <BlogForm 
         addBlog={addBlog}
-        handleTitle={handleTitle}
-        handleAuthor={handleAuthor}
-        handleLikes={handleLikes}
+        handleTitle={({ target }) => setNewTitle(target.value)}
+        handleAuthor={({ target }) => setNewAuthor(target.value)}
+        handleLikes={({ target }) => setNewLikes(target.value)}
         newTitle={newTitle}
         newAuthor={newAuthor}
         newLikes={newLikes} />
+        </Togglable>
         {blogs && blogs.map(blog =>
-  <Blog key={blog.id} blog={blog} />
-)}
+        <Blog key={blog.id} blog={blog} />
+        )}
       </div>
       }
     </div>
