@@ -60,6 +60,31 @@ const App = () => {
     }
   }
 
+  const handleLike = async (blogId) => {
+    try {
+      const blogToLike = blogs.find(blog => blog.id === blogId);
+      if (!blogToLike) {
+        showError('Blog not found');
+        return;
+      }
+  
+      const updatedBlog = { ...blogToLike, likes: blogToLike.likes + 1 };
+  
+      // Actualizar el estado de blogs con el blog actualizado
+      setBlogs((prevBlogs) =>
+        prevBlogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b))
+      );
+  
+      // Actualizar el blog en el servidor
+      await blogService.update(blogToLike.id, updatedBlog);
+  
+      showNotification(`Liked ${updatedBlog.title}`);
+    } catch (error) {
+      console.error(error);
+      showError('Error updating likes');
+    }
+  };
+
   const addBlog = async (event) =>{
     event.preventDefault()
     const nameObject = {
@@ -145,7 +170,7 @@ const App = () => {
         newLikes={newLikes} />
         </Togglable>
         {blogs && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)}/>
         )}
       </div>
       }
