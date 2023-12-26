@@ -2,12 +2,13 @@ import ReactDOM from 'react-dom/client'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 import App from './App'
-import reducer from './reducers/anecdoteReducer'
+import notificacionReducer from './reducers/notificacionReducer'
 import anecdoteReducer from './reducers/anecdoteReducer'
 
 const store = configureStore({
   reducer: {
-    anecdotes: anecdoteReducer
+    anecdotes: anecdoteReducer,
+    notificacion: notificacionReducer
   }
 })
 
