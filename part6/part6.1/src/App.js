@@ -1,16 +1,24 @@
-import Notes from "./components/Note"
-import NewNote from "./components/NewNote"
-import React from 'react'
-import VisibilityFilter from "./components/VisibilityFilter"
+import { useEffect } from 'react'
+import NewNote from './components/NewNote'
+import Notes from './components/Note'
+import VisibilityFilter from './components/VisibilityFilter'
 
-const App = () => {
+import noteService from './services/notes'
+import { setNotes } from './reducers/noteReducer'
+import { useDispatch } from 'react-redux'
 
-  return(
+const App = () => { 
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    noteService
+      .getAll().then(notes => dispatch(setNotes(notes)))
+  }, [dispatch]) // eslint-disable-next-line
+
+  return (
     <div>
       <NewNote />
-
-      <VisibilityFilter/>
-
+      <VisibilityFilter />
       <Notes />
     </div>
   )
