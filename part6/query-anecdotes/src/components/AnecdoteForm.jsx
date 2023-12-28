@@ -1,10 +1,23 @@
+import { getAnecdotes, createAnecdote, updateAnecdote } from './request'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+
 const AnecdoteForm = () => {
+
+  const queryClient = useQueryClient() //LO QUE HACE ESTO ES QUE RECUPERA LAS NOTAS DEL SEV DESPUES DE 
+  //HABERLA AGREGADO.
+  const newAnecdoteMutation = useMutation(createAnecdote, {
+    onSuccess: (newAnecdote) => {
+      const anecdotes = queryClient.getQueryData('anecdotes')
+      queryClient.setQueryData('anecdotes', anecdotes.concat(newAnecdote))
+    },
+  })
 
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    console.log('new anecdote')
+    console.log('new anecdote', content)
+    newAnecdoteMutation.mutate({content, votes:0})
 }
 
   return (
