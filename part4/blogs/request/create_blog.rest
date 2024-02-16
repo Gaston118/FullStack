@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdhc3RvbiIsImlkIjoiNjU3YTM5NWU4Yjc3NjM3Y2I0NjJiNWI5IiwiaWF0IjoxNzAyOTA4MTEwLCJleHAiOjE3MDI5MTE3MTB9.UGFx2LvaJMIRp1OIug0cXqBWvoUIoGC5nm-nXbAIOkI
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdhc3RvbiIsImlkIjoiNjU3YTM5NWU4Yjc3NjM3Y2I0NjJiNWI5IiwiaWF0IjoxNzA2NTY0Mjc2LCJleHAiOjE3MDY1Njc4NzZ9.LLgGeKCSCJgphWDrwk0BKY0XfcThiryd53KJ8M-hyw0
 
 {
     "title": "probando",

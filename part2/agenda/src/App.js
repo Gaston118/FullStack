@@ -125,11 +125,11 @@ const filteredPersons = persons.filter(person =>
     <div>
       {notification && <div className="notification">{notification}</div>}
       {error && <div className="error">{error}</div>}
-      <h2>Phonebook</h2>
-      <div>
+      <h2 className='titulo'>Phonebook</h2>
+      <div className='filtro'>
       <Filter searchTerm={newFilter} onSearchChange={handleSearchChange} />
       </div>
-      <h2>Add a new</h2>
+      <h2 className='add-new'>Add a new contact</h2>
       <PersonForm
       addName={addName}
       newName={newName}

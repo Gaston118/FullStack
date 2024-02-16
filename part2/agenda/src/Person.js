@@ -1,8 +1,12 @@
+import './Person.css'
+
 const Person = ({ person, handleDelete}) => {
     return (
-      <li>{person.name} {person.number}
-      <button onClick={() => handleDelete(person.id)}>Delete</button>
+      <div className='lista-cont'>
+      <li className='lista'>{person.name} {person.number}
+      <button className='button-delete' onClick={() => handleDelete(person.id)}>Delete</button>
       </li>
+      </div>
     )
   }
   

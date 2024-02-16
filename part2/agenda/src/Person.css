@@ -1,0 +1,24 @@
+.button-delete{
+    background-color: rgb(171, 54, 54);
+    color: white;
+    border: 1px solid rgb(73, 4, 4);
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.lista{
+    list-style-type: none;
+    margin-bottom: 13px;
+    text-transform:capitalize;
+}
+
+.lista-cont{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
